@@ -249,25 +249,25 @@ try:
     c8.metric("Net OI", f"{net_oi:,.0f}")
 
     st.subheader("Strike Wise OI")
-    st.dataframe(pd.DataFrame(rows).sort_values("Strike", ascending=False), width=True)
+    st.dataframe(pd.DataFrame(rows).sort_values("Strike", ascending=False), width='stretch')
 
     if os.path.exists(CSV_FILE):
         history = pd.read_csv(CSV_FILE)
 
         st.subheader("15 Minute Signal History")
-        st.dataframe(history.sort_values("timestamp", ascending=False), width=True)
+        st.dataframe(history.sort_values("timestamp", ascending=False), width='stretch')
 
         if len(history) > 1:
             st.subheader("PCR Trend")
             st.plotly_chart(
                 px.line(history, x="timestamp", y="pcr", markers=True),
-                width=True
+                width='stretch'
             )
 
             st.subheader("Net OI Trend")
             st.plotly_chart(
                 px.line(history, x="timestamp", y="net_oi", markers=True),
-                width=True
+                width='stretch'
             )
 
 except Exception as e:
