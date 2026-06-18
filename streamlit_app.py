@@ -8,6 +8,27 @@ import plotly.express as px
 import os
 from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
+from datetime import datetime, time
+from zoneinfo import ZoneInfo
+
+# =========================
+# MARKET HOURS CHECK
+# =========================
+
+IST = ZoneInfo("Asia/Kolkata")
+
+def is_market_hours():
+
+    now = datetime.now(IST)
+
+    # Monday=0 ... Friday=4
+    if now.weekday() > 4:
+        return False
+
+    market_open = time(9, 15)
+    market_close = time(15, 30)
+
+    return market_open <= now.time() <= market_close
 
 st_autorefresh(
     interval=900000,   # 15 minutes
@@ -189,6 +210,18 @@ try:
 
     if not ACCESS_TOKEN:
         st.error("Add Upstox ACCESS_TOKEN in app.py")
+        st.stop()
+
+    if not is_market_hours():
+        st.warning(
+            "Market is closed. Data collection runs only between 09:15 and 15:30 IST (Mon-Fri)."
+        )
+
+        if os.path.exists(CSV_FILE):
+            history = pd.read_csv(CSV_FILE)
+            st.subheader("Last Available Snapshots")
+            st.dataframe(history.tail(20), width="stretch")
+
         st.stop()
 
     data = fetch_option_chain()
