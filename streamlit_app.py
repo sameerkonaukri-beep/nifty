@@ -54,12 +54,20 @@ HEADERS = {
 }
 
 def current_slot():
-    now = datetime.now()
+    from zoneinfo import ZoneInfo
+
+IST = ZoneInfo("Asia/Kolkata")
+
+def current_slot():
+    now = datetime.now(IST)
+    slot_minute = (now.minute // 15) * 15
+
     return now.replace(
-        minute=(now.minute // 15) * 15,
+        minute=slot_minute,
         second=0,
         microsecond=0
     )
+    
 
 def fetch_option_chain():
     params = {
