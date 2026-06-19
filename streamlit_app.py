@@ -54,11 +54,6 @@ HEADERS = {
 }
 
 def current_slot():
-    from zoneinfo import ZoneInfo
-
-IST = ZoneInfo("Asia/Kolkata")
-
-def current_slot():
     now = datetime.now(IST)
     slot_minute = (now.minute // 15) * 15
 
