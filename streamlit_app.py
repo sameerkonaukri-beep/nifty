@@ -45,7 +45,7 @@ DETAIL_FILE = "oi_snapshots_detail.csv"
 
 st.set_page_config(page_title="NIFTY OI Dashboard", layout="wide")
 
-expiry = st.sidebar.text_input("Expiry (YYYY-MM-DD)", value="2026-06-23")
+expiry = st.sidebar.text_input("Expiry (YYYY-MM-DD)", value="2026-06-30")
 
 HEADERS = {
     "Accept": "application/json",
