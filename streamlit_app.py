@@ -45,7 +45,45 @@ DETAIL_FILE = "oi_snapshots_detail.csv"
 
 st.set_page_config(page_title="NIFTY OI Dashboard", layout="wide")
 
-expiry = st.sidebar.text_input("Expiry (YYYY-MM-DD)", value="2026-06-30")
+def get_current_expiry(access_token):
+
+    url = "https://api.upstox.com/v2/option/contracts"
+
+    headers = {
+        "Accept": "application/json",
+        "Api-Version": "2.0",
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    params = {
+        "instrument_key": "NSE_INDEX|Nifty 50"
+    }
+
+    response = requests.get(
+        url,
+        headers=headers,
+        params=params,
+        timeout=30
+    )
+
+    response.raise_for_status()
+
+    data = response.json()["data"]
+
+    expiries = sorted(
+        list(
+            set(
+                x["expiry"] for x in data
+            )
+        )
+    )
+
+    return expiries[0]
+
+#expiry = st.sidebar.text_input("Expiry (YYYY-MM-DD)", value="2026-06-30")
+
+expiry = get_current_expiry(ACCESS_TOKEN)
+
 
 HEADERS = {
     "Accept": "application/json",
