@@ -45,6 +45,12 @@ DETAIL_FILE = "oi_snapshots_detail.csv"
 
 st.set_page_config(page_title="NIFTY OI Dashboard", layout="wide")
 
+HEADERS = {
+    "Accept": "application/json",
+    "Api-Version": "2.0",
+    "Authorization": f"Bearer {ACCESS_TOKEN}"
+}
+
 def get_current_expiry(access_token):
 
     url = "https://api.upstox.com/v2/option/contracts"
@@ -84,12 +90,6 @@ def get_current_expiry(access_token):
 
 expiry = get_current_expiry(ACCESS_TOKEN)
 
-
-HEADERS = {
-    "Accept": "application/json",
-    "Api-Version": "2.0",
-    "Authorization": f"Bearer {ACCESS_TOKEN}"
-}
 
 def current_slot():
     now = datetime.now(IST)
